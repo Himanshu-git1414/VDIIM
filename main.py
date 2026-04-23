@@ -5,6 +5,8 @@ from fastapi.middleware.cors import CORSMiddleware
 
 app = FastAPI() 
 
+data_cache = None
+
 app.add_middleware(
     CORSMiddleware,
     allow_origins = ["https://vdiim.vercel.app"],
@@ -16,7 +18,11 @@ app.add_middleware(
 def get_data():
     global data_cache
     if data_cache is None:
-        data_cache = load_and_process_data()
+        try:
+            data_cache = load_and_process_data()
+        except Exception as e:
+            print("Error loading data:", e)
+            raise e
     return data_cache
 
 @app.get("/") 
