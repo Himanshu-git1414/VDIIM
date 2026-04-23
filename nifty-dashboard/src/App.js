@@ -169,7 +169,7 @@ function App() {
 
   // DAILY DATA
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/daily-summary?limit=20")
+    fetch("https://vdiim.onrender.com/daily-summary?limit=20")
       .then((res) => res.json())
       .then((data) => setDailySummary(data))
       .catch((err) => console.error(err));
@@ -177,7 +177,7 @@ function App() {
 
   // INTRADAY DATA
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/volatility?limit=300")
+    fetch("https://vdiim.onrender.com/volatility?limit=300")
       .then((res) => res.json())
       .then((data) => {
         const formatted = data.map((d, i) => ({
@@ -202,7 +202,7 @@ function App() {
   useEffect(() => {
   if (!selectedDate) return;
 
-  fetch(`http://127.0.0.1:8000/intraday-by-date?date=${selectedDate}`)
+  fetch(`https://vdiim.onrender.com/intraday-by-date?date=${selectedDate}`)
     .then((res) => res.json())
     .then((data) => {
       const formatted = data.map((d, i) => ({
@@ -225,21 +225,21 @@ function App() {
 }, [selectedDate]);
 
   useEffect(() =>{
-    fetch("http://127.0.0.1:8000/hypothesis-test")
+    fetch("https://vdiim.onrender.com/hypothesis-test")
     .then(res => res.json())
     .then(data => setHypothesis(data))
     .catch(err => console.error(err));
   },[]);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/range-distribution")
+    fetch("https://vdiim.onrender.com/range-distribution")
     .then(res => res.json())
     .then(data => setRangeData(data))
     .catch(err => console.error(err));
   }, []);
 
   useEffect(() => {
-    fetch("http://127.0.0.1:8000/predict-next-open")
+    fetch("https://vdiim.onrender.com/predict-next-open")
     .then(res => res.json())
     .then(data => setPrediction(data))
     .catch(err => console.error(err));
