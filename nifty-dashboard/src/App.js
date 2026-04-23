@@ -532,8 +532,8 @@ function App() {
                 onMouseLeave={(e) => e.currentTarget.style.background = index % 2 === 0 ? "#1e293b" : "#0f172a"}
                 >
                 <td style = {{ padding : "10px", textAlign : "center"}}>{new Date(row.timestamp).toLocaleDateString()}</td>
-                <td style = {{ padding : "10px", textAlign : "center"}}>{row.avg_vol.toFixed(6)}</td>
-                <td style = {{ padding : "10px", textAlign : "center"}}>{row.max_vol.toFixed(6)}</td>
+                <td style = {{ padding : "10px", textAlign : "center"}}>{row.avg_vol?.toFixed(6)}</td>
+                <td style = {{ padding : "10px", textAlign : "center"}}>{row.max_vol?.toFixed(6)}</td>
                 <td style = {{ padding : "10px", textAlign : "center"}}>{row.spike_count}</td>
                 <td style={{
                     padding : "8px",
