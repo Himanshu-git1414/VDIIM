@@ -100,7 +100,7 @@ function App() {
           border : "1px solid #334155",
           color : "#e2e8f0"
         }}>
-          <p><stong>Index :</stong> {data.index}</p>
+          <p><strong>Index :</strong> {data.index}</p>
           <p style = {{color : "#60a5fa"}}>Open: {data.open}</p>
           <p style = {{color : "#22c55e"}}>High: {data.high}</p>
           <p style = {{color : "#ef4444"}}>Low: {data.low}</p>
@@ -207,7 +207,7 @@ function App() {
     .then((data) => {
       const formatted = data.map((d, i) => ({
         index: i,
-        time: new Date(d.timestamp).toLocaleTimeString(),
+        time: d.timestamp ? new Date(d.timestamp).toLocaleTimeString() : i,
         open : Number(d.open),
         high : Number(d.high),
         low : Number(d.low),
@@ -551,7 +551,7 @@ function App() {
 
       <h2>Range Distribution (High vs Normal Vol)</h2>
 
-      {rangeData &&(
+      {rangeData && hypothesis && (
         <div style={{
           background : "white",
           padding : "20px",
