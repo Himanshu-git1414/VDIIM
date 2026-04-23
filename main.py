@@ -13,7 +13,11 @@ app.add_middleware(
     allow_headers = ["*"],
 )
 
-df, daily_df, hypothesis_result, regression_result = load_and_process_data() 
+def get_data():
+    global data_cache
+    if data_cache is None:
+        data_cache = load_and_process_data()
+    return data_cache
 
 @app.get("/") 
 def home(): 
@@ -25,6 +29,7 @@ def test():
 
 @app.get("/volatility") 
 def get_volatility(limit: int = 100): 
+    df, daily_df, hypothesis_result, regression_result = get_data()
     data = df[["open", "high", "low", "close", "rolling_vol_15", 
                "vol_spike", "range", "ema_8", "ema_30"]].reset_index().tail(limit)
     return data.to_dict(orient="records")
@@ -32,6 +37,7 @@ def get_volatility(limit: int = 100):
 @app.get("/daily-summary")
 def daily_summary(limit: int = 50):
     try:
+        df, daily_df, hypothesis_result, regression_result = get_data()
         data = daily_df.reset_index().tail(limit)
         return data.to_dict(orient="records")
     except Exception as e:
@@ -39,12 +45,14 @@ def daily_summary(limit: int = 50):
 
 @app.get("/high-vol-days")
 def high_vol_days(limit: int = 20):
+    df, daily_df, hypothesis_result, regression_result = get_data()
     data = daily_df[daily_df["regime"] == "High Vol"].reset_index().tail(limit)
     return data.to_dict(orient = "records")
 
 @app.get("/intraday-by-date")
 def intraday_by_date(date: str):
     try:
+        df, daily_df, hypothesis_result, regression_result = get_data()
         filtered = df[df.index.date == pd.to_datetime(date).date()]
         data = filtered[["open", "high", "low", "close", "rolling_vol_15", 
                          "vol_spike", "range", "ema_8", "ema_30"]].reset_index()
@@ -54,10 +62,12 @@ def intraday_by_date(date: str):
     
 @app.get("/hypothesis-test")
 def get_hypothesis():
+    df, daily_df, hypothesis_result, regression_result = get_data()
     return hypothesis_result
 
 @app.get("/range-distribution")
 def range_distribution():
+    df, daily_df, hypothesis_result, regression_result = get_data()
     df_temp = df.copy()
     df_temp["date"] = df_temp.index.date
     daily_temp = daily_df.copy()
@@ -75,4 +85,5 @@ def range_distribution():
 
 @app.get("/predict-next-open")
 def predict_next_open():
+    df, daily_df, hypothesis_result, regression_result = get_data()
     return regression_result
